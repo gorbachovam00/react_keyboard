@@ -7,25 +7,32 @@ interface State {
 
 export class App extends Component<{}, State> {
   state: Readonly<State> = {
-    pressedKey: 'Nothing was pressed yet',
+    pressedKey: null,
   };
 
   handleKeyUp = (event: KeyboardEvent) => {
-    this.setState({ pressedKey: `The last pressed key is [${event.key}]` });
+    // this.setState({ pressedKey: `The last pressed key is [${event.key}]` });
+    this.setState({ pressedKey: event.key });
   };
 
   componentDidMount() {
     document.addEventListener('keyup', this.handleKeyUp);
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     document.removeEventListener('keyup', this.handleKeyUp);
   }
 
   render() {
+    const { pressedKey } = this.state;
+
     return (
       <div className="App">
-        <p className="App__message">{this.state.pressedKey}</p>
+        <p className="App__message">
+          {pressedKey
+            ? `The last pressed key is [${pressedKey}]`
+            : `Nothing was pressed yet`}
+        </p>
       </div>
     );
   }
@@ -36,3 +43,7 @@ export class App extends Component<{}, State> {
 //     <p className="App__message">The last pressed key is [Enter]</p>
 //   </div>
 // );
+
+// {
+//   this.state.pressedKey;
+// }
